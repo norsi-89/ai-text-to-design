@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Text to Website Designer | Turn Ideas Into Designs</title>
+    <title>AI Design Studio | Transform Text to Beautiful Designs</title>
     <style>
         * {
             margin: 0;
@@ -12,42 +12,49 @@
         }
 
         :root {
-            --primary-color: #6366f1;
+            --primary: #6366f1;
             --primary-dark: #4f46e5;
             --primary-light: #818cf8;
-            --secondary-color: #ec4899;
-            --accent-color: #06b6d4;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+
             --dark-bg: #0f172a;
-            --dark-bg-secondary: #1a1f3a;
+            --dark-bg-alt: #1a1f3a;
             --dark-card: #1e293b;
             --dark-border: #334155;
             --light-text: #f1f5f9;
             --muted-text: #cbd5e1;
-            --success: #10b981;
-            --warning: #f59e0b;
 
-            --gradient-1: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
-            --gradient-2: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
-            --gradient-3: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            --gradient-accent: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
 
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
             --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
 
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: var(--gradient-2);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--gradient-bg);
             color: var(--light-text);
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Background effects */
         body::before {
             content: '';
             position: fixed;
@@ -61,7 +68,6 @@
             z-index: -1;
         }
 
-        /* Smooth scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -71,7 +77,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background: var(--primary);
             border-radius: 4px;
         }
 
@@ -85,35 +91,48 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--dark-border);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
             padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
 
         .nav-brand {
             font-size: 1.5rem;
-            font-weight: 700;
-            background: var(--gradient-1);
+            font-weight: 800;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             list-style: none;
+            flex: 1;
+            justify-content: center;
         }
 
         .nav-links a {
             color: var(--muted-text);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem;
             transition: var(--transition);
             position: relative;
         }
@@ -125,7 +144,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--gradient-1);
+            background: var(--gradient-primary);
             transition: var(--transition);
         }
 
@@ -137,33 +156,68 @@
             width: 100%;
         }
 
-        .theme-toggle {
-            background: var(--dark-card);
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
             border: 1px solid var(--dark-border);
-            color: var(--light-text);
-            padding: 0.5rem 1rem;
+            background: transparent;
+            color: var(--muted-text);
             border-radius: 8px;
             cursor: pointer;
-            transition: var(--transition);
             font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
 
-        .theme-toggle:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+        .nav-btn:hover {
+            background: var(--dark-card);
+            color: var(--light-text);
+            border-color: var(--primary);
         }
 
-        /* Main container */
+        .nav-btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--light-text);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
         }
 
         /* Hero Section */
         .hero {
-            padding-top: 8rem;
-            padding-bottom: 4rem;
+            padding-top: 9rem;
+            padding-bottom: 3rem;
             text-align: center;
             min-height: 100vh;
             display: flex;
@@ -175,15 +229,15 @@
         .hero-badge {
             display: inline-block;
             background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--primary-color);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             color: var(--primary-light);
-            padding: 0.5rem 1.25rem;
+            padding: 0.6rem 1.5rem;
             border-radius: 50px;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             animation: float 3s ease-in-out infinite;
         }
 
@@ -193,15 +247,15 @@
         }
 
         .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 800;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
             line-height: 1.1;
             margin-bottom: 1.5rem;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
         }
 
         .hero-title-gradient {
-            background: var(--gradient-1);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -211,129 +265,33 @@
             font-size: clamp(1rem, 2.5vw, 1.25rem);
             color: var(--muted-text);
             margin-bottom: 2.5rem;
-            max-width: 600px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
             line-height: 1.8;
         }
 
-        /* Main Content Section */
-        .main-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        @media (min-width: 768px) {
-            .main-section {
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem;
-                align-items: stretch;
-            }
-        }
-
-        /* Input Card */
-        .input-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
+        .hero-buttons {
             display: flex;
-            flex-direction: column;
-        }
-
-        .input-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
-            transform: translateY(-4px);
-        }
-
-        .input-label {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .input-label-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
+            gap: 1.5rem;
             justify-content: center;
-            background: var(--gradient-1);
-            border-radius: 50%;
-            font-size: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .prompt-hint {
-            font-size: 0.875rem;
-            color: var(--muted-text);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .prompt-area {
-            width: 100%;
-            min-height: 120px;
-            background: rgba(15, 23, 42, 0.5);
-            border: 2px solid var(--dark-border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            color: var(--light-text);
-            font-size: 1rem;
-            font-family: inherit;
-            resize: vertical;
-            transition: var(--transition);
-            font-weight: 400;
-        }
-
-        .prompt-area::placeholder {
-            color: rgba(203, 213, 225, 0.5);
-        }
-
-        .prompt-area:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
-        }
-
-        .prompt-chars {
-            font-size: 0.8rem;
-            color: var(--muted-text);
-            margin-top: 0.5rem;
-            text-align: right;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: auto;
-            padding-top: 1.5rem;
-        }
-
-        /* Buttons */
+        /* Button Styles */
         .btn {
-            padding: 1rem 1.5rem;
+            padding: 1rem 2rem;
             border: none;
             border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             text-decoration: none;
-            white-space: nowrap;
             position: relative;
             overflow: hidden;
         }
@@ -354,32 +312,33 @@
         }
 
         .btn-primary {
-            background: var(--gradient-1);
+            background: var(--gradient-primary);
             color: white;
-            flex: 1;
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             min-height: 48px;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
         }
 
         .btn-secondary {
-            background: var(--dark-card);
+            background: transparent;
             color: var(--light-text);
-            border: 1px solid var(--dark-border);
+            border: 2px solid var(--primary);
+            min-height: 48px;
         }
 
         .btn-secondary:hover {
-            background: var(--dark-bg);
-            border-color: var(--primary-color);
-            color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary-light);
+        }
+
+        .btn-small {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.875rem;
+            min-height: 40px;
         }
 
         .btn-icon {
@@ -387,56 +346,212 @@
             height: 24px;
         }
 
-        /* Output Card */
-        .output-card {
-            background: rgba(30, 41, 59, 0.6);
+        /* Main Section */
+        .main-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 6rem;
+            align-items: stretch;
+        }
+
+        /* Input Card */
+        .input-card {
+            background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 2.5rem;
             box-shadow: var(--shadow-lg);
             transition: var(--transition);
-            min-height: 400px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+        }
+
+        .input-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-4px);
+        }
+
+        .input-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
             align-items: center;
+            gap: 0.75rem;
+        }
+
+        .input-label-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .prompt-hint {
+            font-size: 0.9rem;
+            color: var(--muted-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .prompt-area {
+            width: 100%;
+            min-height: 140px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: var(--light-text);
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: var(--transition);
+            font-weight: 400;
+            max-height: 300px;
+        }
+
+        .prompt-area::placeholder {
+            color: rgba(203, 213, 225, 0.5);
+        }
+
+        .prompt-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .prompt-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .prompt-chars {
+            font-size: 0.8rem;
+            color: var(--muted-text);
+        }
+
+        .prompt-chars.warning {
+            color: var(--warning);
+        }
+
+        .example-prompts {
+            margin-top: 1.5rem;
+        }
+
+        .example-prompts-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .example-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .example-item {
+            padding: 0.75rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--muted-text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .example-item:hover {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--light-text);
+            border-color: var(--primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+        }
+
+        .button-group .btn {
+            flex: 1;
+        }
+
+        /* Output Card */
+        .output-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
         }
 
         .output-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: var(--shadow-glow);
         }
 
         .output-empty {
             text-align: center;
-            color: var(--muted-text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            gap: 1rem;
         }
 
         .output-empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+            font-size: 3.5rem;
+            opacity: 0.6;
         }
 
         .output-empty-text {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--light-text);
+        }
+
+        .output-empty p {
+            color: var(--muted-text);
+            max-width: 300px;
         }
 
         .output-loading {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            justify-content: center;
+            gap: 2rem;
+            height: 100%;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.2);
-            border-top: 3px solid var(--primary-color);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -446,31 +561,20 @@
         }
 
         .loading-text {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
+            color: var(--light-text);
+            font-weight: 600;
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
             color: var(--muted-text);
-            text-align: center;
+            animation: pulse-text 2s ease-in-out infinite;
         }
 
-        .loading-dots {
-            display: inline-block;
-        }
-
-        .loading-dot {
-            display: inline-block;
-            width: 4px;
-            height: 4px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            margin: 0 2px;
-            animation: pulse 1.4s infinite;
-        }
-
-        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes pulse {
-            0%, 60%, 100% { opacity: 0.3; }
-            30% { opacity: 1; }
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
         .output-preview {
@@ -481,13 +585,32 @@
             gap: 1rem;
         }
 
-        .output-label {
-            font-weight: 700;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .output-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--dark-border);
+            margin-bottom: 1rem;
+        }
+
+        .output-tab {
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
             color: var(--muted-text);
-            margin-bottom: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .output-tab.active {
+            color: var(--light-text);
+            border-bottom-color: var(--primary);
+        }
+
+        .output-tab:hover {
+            color: var(--light-text);
         }
 
         .output-content {
@@ -501,66 +624,17 @@
             line-height: 1.8;
             word-break: break-word;
             white-space: pre-wrap;
+            font-size: 0.9rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
         }
 
         .output-actions {
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .btn-small {
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            flex: 1;
-        }
-
-        /* Info Sections */
-        .info-sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 6rem;
-        }
-
-        .info-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: var(--transition);
-        }
-
-        .info-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-4px);
-            box-shadow: 0 0 40px rgba(6, 182, 212, 0.1);
-        }
-
-        .info-card-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-3);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .info-card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .info-card-description {
-            color: var(--muted-text);
-            line-height: 1.6;
-        }
-
-        /* How It Works Section */
+        /* Sections */
         .section {
             margin-bottom: 6rem;
             scroll-margin-top: 80px;
@@ -568,10 +642,10 @@
 
         .section-title {
             font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 1rem;
             text-align: center;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.8px;
         }
 
         .section-subtitle {
@@ -584,50 +658,53 @@
             margin-right: auto;
         }
 
+        /* How It Works */
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .step {
-            background: rgba(30, 41, 59, 0.6);
+            background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
             transition: var(--transition);
             position: relative;
         }
 
         .step:hover {
-            border-color: var(--secondary-color);
-            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-glow);
         }
 
         .step-number {
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-1);
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-primary);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin: 0 auto 1rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
         .step-title {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         .step-description {
             color: var(--muted-text);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         /* Features Section */
@@ -642,53 +719,56 @@
             backdrop-filter: blur(20px);
             border: 1px solid rgba(99, 102, 241, 0.15);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.75rem;
             transition: var(--transition);
             display: flex;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .feature:hover {
-            border-color: var(--primary-color);
-            background: rgba(30, 41, 59, 0.8);
+            border-color: var(--primary);
+            background: rgba(30, 41, 59, 0.7);
             transform: translateX(4px);
         }
 
         .feature-icon {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(99, 102, 241, 0.2);
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.25rem;
             flex-shrink: 0;
         }
 
         .feature-content {
             flex: 1;
+            text-align: left;
         }
 
         .feature-title {
             font-weight: 700;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
         .feature-description {
             font-size: 0.875rem;
             color: var(--muted-text);
+            line-height: 1.5;
         }
 
-        /* Recent Designs Section */
-        .designs-gallery {
+        /* Examples Gallery */
+        .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
         }
 
-        .design-item {
-            background: rgba(30, 41, 59, 0.6);
+        .gallery-item {
+            background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(99, 102, 241, 0.2);
             border-radius: 16px;
@@ -697,13 +777,13 @@
             cursor: pointer;
         }
 
-        .design-item:hover {
-            border-color: var(--primary-color);
+        .gallery-item:hover {
+            border-color: var(--primary);
             transform: translateY(-8px);
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+            box-shadow: var(--shadow-glow);
         }
 
-        .design-preview {
+        .gallery-preview {
             width: 100%;
             height: 200px;
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
@@ -716,7 +796,7 @@
             overflow: hidden;
         }
 
-        .design-preview::after {
+        .gallery-preview::after {
             content: '';
             position: absolute;
             top: 0;
@@ -732,23 +812,51 @@
             100% { transform: translateX(100%); }
         }
 
-        .design-info {
+        .gallery-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(99, 102, 241, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .gallery-info {
             padding: 1.5rem;
         }
 
-        .design-title {
+        .gallery-title {
             font-weight: 700;
             margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
 
-        .design-date {
-            font-size: 0.875rem;
+        .gallery-desc {
+            font-size: 0.85rem;
             color: var(--muted-text);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--primary-light);
+            margin-right: 0.5rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--dark-border);
             padding: 3rem 0;
@@ -756,6 +864,9 @@
         }
 
         .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             text-align: center;
             color: var(--muted-text);
         }
@@ -764,7 +875,7 @@
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
 
@@ -772,74 +883,122 @@
             color: var(--muted-text);
             text-decoration: none;
             transition: var(--transition);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
             color: var(--primary-light);
         }
 
+        .footer-bottom {
+            border-top: 1px solid var(--dark-border);
+            padding-top: 2rem;
+            font-size: 0.85rem;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             nav {
-                padding: 1rem 1rem;
-                flex-direction: column;
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-container {
                 gap: 1rem;
             }
 
             .nav-links {
+                display: none;
                 gap: 1rem;
-                font-size: 0.875rem;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                flex-direction: column;
+                padding: 1.5rem;
+                border-bottom: 1px solid var(--dark-border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .container {
+                padding: 0 1.5rem;
             }
 
             .hero {
-                padding-top: 6rem;
+                padding-top: 7rem;
                 padding-bottom: 2rem;
-                min-height: auto;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
             }
 
             .main-section {
                 grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .input-card,
+            .output-card {
+                padding: 1.5rem;
             }
 
             .output-card {
-                min-height: 300px;
+                min-height: 350px;
             }
 
             .button-group {
                 flex-direction: column;
             }
 
-            .btn {
-                min-height: 44px;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
+            .button-group .btn {
+                width: 100%;
             }
 
             .steps {
                 grid-template-columns: 1fr;
             }
 
-            .designs-gallery {
+            .gallery {
                 grid-template-columns: 1fr;
             }
 
-            .input-card,
-            .output-card,
-            .info-card,
-            .step {
-                padding: 1.5rem;
+            .prompt-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                gap: 1rem;
+                flex-direction: column;
             }
         }
 
-        /* Light mode (optional) */
+        /* Light Mode */
         body.light-mode {
-            --primary-color: #4f46e5;
             --dark-bg: #f8fafc;
-            --dark-bg-secondary: #f1f5f9;
+            --dark-bg-alt: #f1f5f9;
             --dark-card: #ffffff;
             --dark-border: #e2e8f0;
             --light-text: #0f172a;
@@ -847,15 +1006,14 @@
         }
 
         body.light-mode nav {
-            background: rgba(248, 250, 252, 0.8);
-            border-bottom-color: var(--dark-border);
+            background: rgba(248, 250, 252, 0.85);
         }
 
         body.light-mode .input-card,
         body.light-mode .output-card,
-        body.light-mode .info-card,
         body.light-mode .step,
-        body.light-mode .feature {
+        body.light-mode .feature,
+        body.light-mode .gallery-item {
             background: rgba(255, 255, 255, 0.7);
             border-color: rgba(79, 70, 229, 0.2);
         }
@@ -868,27 +1026,45 @@
         }
 
         body.light-mode footer {
-            background: rgba(248, 250, 252, 0.8);
-            border-top-color: var(--dark-border);
+            background: rgba(248, 250, 252, 0.6);
         }
 
-        body.light-mode .btn-secondary {
-            background: var(--dark-card);
-            border-color: var(--dark-border);
-            color: var(--light-text);
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            nav, footer, .button-group, .output-actions {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav>
-        <div class="nav-brand">🎨 DesignAI</div>
-        <ul class="nav-links">
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#recent">Recent Designs</a></li>
-        </ul>
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <div class="nav-container container">
+            <div class="nav-brand">✨ AI Design Studio</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#how-it-works" onclick="closeMenu()">How It Works</a></li>
+                <li><a href="#features" onclick="closeMenu()">Features</a></li>
+                <li><a href="#examples" onclick="closeMenu()">Examples</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+                <button class="nav-btn nav-btn-primary" onclick="scrollToMain()">Get Started</button>
+                <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -899,8 +1075,14 @@
                 Turn Your Ideas Into <span class="hero-title-gradient">Beautiful Designs</span> With AI
             </h1>
             <p class="hero-subtitle">
-                Describe what you want, and AI will transform your text into a modern website design in seconds.
+                Describe what you want, and AI will instantly transform your text into a modern, production-ready website design.
             </p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToMain()">
+                    <span>⚡ Generate Design Now</span>
+                </button>
+                <a href="#examples" class="btn btn-secondary">View Examples →</a>
+            </div>
         </div>
     </section>
 
@@ -913,12 +1095,29 @@
                 Your Design Vision
             </label>
             <p class="prompt-hint">
-                Describe your ideal website design. Be specific about colors, layout, style, and features.
+                Describe your ideal website design. Include details about style, colors, layout, features, and mood.
             </p>
-            <textarea id="promptInput" class="prompt-area" placeholder="E.g., Create a modern SaaS landing page with a hero section, gradient background, and animated buttons. Dark theme with purple accents..."></textarea>
-            <div class="prompt-chars">
-                <span id="charCount">0</span> / 2000 characters
+            <textarea id="promptInput" class="prompt-area" placeholder="E.g., Create a modern SaaS landing page with a hero section, gradient background, floating elements, and animated buttons. Dark theme with purple and cyan accents..." maxlength="2000"></textarea>
+            
+            <div class="prompt-footer">
+                <span class="prompt-chars">
+                    <span id="charCount">0</span> / 2000
+                </span>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-small" onclick="insertExample(0)" style="flex: 1; max-width: 120px;">💡 Example 1</button>
+                </div>
             </div>
+
+            <div class="example-prompts">
+                <div class="example-prompts-label">Quick Examples</div>
+                <div class="example-list">
+                    <div class="example-item" onclick="insertExample(0)">🏢 Create a modern SaaS landing page</div>
+                    <div class="example-item" onclick="insertExample(1)">☕ Create a luxury coffee shop website</div>
+                    <div class="example-item" onclick="insertExample(2)">🛍️ Create an online clothing store</div>
+                    <div class="example-item" onclick="insertExample(3)">💼 Create a professional portfolio site</div>
+                </div>
+            </div>
+
             <div class="button-group">
                 <button class="btn btn-primary" onclick="generateDesign()">
                     <span>⚡ Generate Design</span>
@@ -931,8 +1130,8 @@
         <div class="output-card">
             <div id="outputContent" class="output-empty">
                 <div class="output-empty-icon">🎯</div>
-                <div class="output-empty-text">Your Design Will Appear Here</div>
-                <p>Start by describing your design vision on the left, then click "Generate Design"</p>
+                <div class="output-empty-text">Your Design Awaits</div>
+                <p>Write a description of your desired design on the left and click "Generate Design" to begin</p>
             </div>
         </div>
     </section>
@@ -946,14 +1145,14 @@
                 <div class="step-number">1</div>
                 <h3 class="step-title">Describe Your Vision</h3>
                 <p class="step-description">
-                    Write a detailed description of what you want your design to look like. The more details you provide, the better the AI understands your vision.
+                    Write a detailed description of what you want your design to look like. Be specific about layout, colors, style, and key features.
                 </p>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
                 <h3 class="step-title">AI Generates Magic</h3>
                 <p class="step-description">
-                    Our advanced AI processes your description and creates a beautiful, modern design that matches your requirements perfectly.
+                    Our advanced AI processes your description and creates a beautiful, modern design that perfectly matches your vision.
                 </p>
             </div>
             <div class="step">
@@ -975,92 +1174,122 @@
                 <div class="feature-icon">⚡</div>
                 <div class="feature-content">
                     <div class="feature-title">Ultra-Fast Generation</div>
-                    <p class="feature-description">Get your design in seconds, not hours</p>
+                    <p class="feature-description">Get your design in seconds, not hours. AI processes your vision instantly.</p>
                 </div>
             </div>
             <div class="feature">
                 <div class="feature-icon">🎨</div>
                 <div class="feature-content">
-                    <div class="feature-title">Modern Styles</div>
-                    <p class="feature-description">Access latest design trends and patterns</p>
+                    <div class="feature-title">Modern Design Trends</div>
+                    <p class="feature-description">Access latest design patterns, gradients, and modern UI components.</p>
                 </div>
             </div>
             <div class="feature">
                 <div class="feature-icon">📱</div>
                 <div class="feature-content">
                     <div class="feature-title">Fully Responsive</div>
-                    <p class="feature-description">Works perfectly on mobile, tablet, and desktop</p>
+                    <p class="feature-description">Designs work perfectly on desktop, tablet, and mobile devices.</p>
                 </div>
             </div>
             <div class="feature">
                 <div class="feature-icon">💻</div>
                 <div class="feature-content">
-                    <div class="feature-title">Clean Code</div>
-                    <p class="feature-description">Production-ready HTML and CSS</p>
+                    <div class="feature-title">Production-Ready Code</div>
+                    <p class="feature-description">Clean, optimized HTML/CSS that's ready to use immediately.</p>
                 </div>
             </div>
             <div class="feature">
-                <div class="feature-icon">🎭</div>
+                <div class="feature-icon">🔧</div>
                 <div class="feature-content">
-                    <div class="feature-title">Multiple Styles</div>
-                    <p class="feature-description">Choose from glassmorphism, neumorphism, and more</p>
+                    <div class="feature-title">Easy Customization</div>
+                    <p class="feature-description">Edit colors, layouts, and content directly in your code.</p>
                 </div>
             </div>
             <div class="feature">
-                <div class="feature-icon">♿</div>
+                <div class="feature-icon">🎯</div>
                 <div class="feature-content">
-                    <div class="feature-title">Accessible Design</div>
-                    <p class="feature-description">Built with WCAG standards in mind</p>
+                    <div class="feature-title">Unlimited Designs</div>
+                    <p class="feature-description">Create as many designs as you want. No limits or restrictions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Recent Designs Section -->
-    <section id="recent" class="section container">
-        <h2 class="section-title">Recent Designs</h2>
-        <p class="section-subtitle">Explore designs created by our community</p>
-        <div class="designs-gallery">
-            <div class="design-item">
-                <div class="design-preview">SaaS Landing Page</div>
-                <div class="design-info">
-                    <div class="design-title">Modern SaaS Platform</div>
-                    <div class="design-date">2 hours ago</div>
+    <!-- Examples Section -->
+    <section id="examples" class="section container">
+        <h2 class="section-title">Beautiful Examples</h2>
+        <p class="section-subtitle">Explore designs created with AI Design Studio</p>
+        <div class="gallery">
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">SaaS</div>
+                    Modern SaaS
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Tech Startup</div>
+                    <p class="gallery-desc">A sleek SaaS landing page with hero section and pricing tables</p>
+                    <span class="gallery-tag">Startup</span>
+                    <span class="gallery-tag">Dark Theme</span>
                 </div>
             </div>
-            <div class="design-item">
-                <div class="design-preview">Portfolio Website</div>
-                <div class="design-info">
-                    <div class="design-title">Creative Portfolio</div>
-                    <div class="design-date">4 hours ago</div>
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">Shop</div>
+                    E-commerce Store
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Fashion Retail</div>
+                    <p class="gallery-desc">Beautiful e-commerce site with product grid and shopping cart</p>
+                    <span class="gallery-tag">E-commerce</span>
+                    <span class="gallery-tag">Modern</span>
                 </div>
             </div>
-            <div class="design-item">
-                <div class="design-preview">E-commerce Store</div>
-                <div class="design-info">
-                    <div class="design-title">Premium E-commerce</div>
-                    <div class="design-date">6 hours ago</div>
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">Food</div>
+                    Restaurant Site
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Fine Dining</div>
+                    <p class="gallery-desc">Elegant restaurant website with menu and reservation system</p>
+                    <span class="gallery-tag">Restaurant</span>
+                    <span class="gallery-tag">Elegant</span>
                 </div>
             </div>
-            <div class="design-item">
-                <div class="design-preview">Blog Platform</div>
-                <div class="design-info">
-                    <div class="design-title">Tech Blog Hub</div>
-                    <div class="design-date">8 hours ago</div>
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">Portfolio</div>
+                    Portfolio Site
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Creative Portfolio</div>
+                    <p class="gallery-desc">Stunning portfolio to showcase creative work and projects</p>
+                    <span class="gallery-tag">Portfolio</span>
+                    <span class="gallery-tag">Creative</span>
                 </div>
             </div>
-            <div class="design-item">
-                <div class="design-preview">Dashboard UI</div>
-                <div class="design-info">
-                    <div class="design-title">Analytics Dashboard</div>
-                    <div class="design-date">10 hours ago</div>
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">Agency</div>
+                    Agency Website
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Digital Agency</div>
+                    <p class="gallery-desc">Professional agency site with services and portfolio showcase</p>
+                    <span class="gallery-tag">Agency</span>
+                    <span class="gallery-tag">Professional</span>
                 </div>
             </div>
-            <div class="design-item">
-                <div class="design-preview">App Landing</div>
-                <div class="design-info">
-                    <div class="design-title">Mobile App Promo</div>
-                    <div class="design-date">12 hours ago</div>
+            <div class="gallery-item">
+                <div class="gallery-preview">
+                    <div class="gallery-badge">Tech</div>
+                    Tech Company
+                </div>
+                <div class="gallery-info">
+                    <div class="gallery-title">Software Company</div>
+                    <p class="gallery-desc">Technology company site with product features and documentation</p>
+                    <span class="gallery-tag">Technology</span>
+                    <span class="gallery-tag">Enterprise</span>
                 </div>
             </div>
         </div>
@@ -1068,78 +1297,121 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#privacy">Privacy</a>
-                    <a href="#terms">Terms</a>
-                    <a href="#contact">Contact</a>
-                </div>
-                <p>&copy; 2024 DesignAI. All rights reserved. | Turning ideas into reality with AI</p>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="#">Support</a>
+                <a href="#">Documentation</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Design Studio. All rights reserved. | Made with ❤️ for designers and developers</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Character counter
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+
+        // Character Counter
         const promptInput = document.getElementById('promptInput');
         const charCount = document.getElementById('charCount');
 
-        promptInput.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-            if (this.value.length >= 2000) {
-                this.value = this.value.substring(0, 2000);
+        promptInput.addEventListener('input', () => {
+            charCount.textContent = promptInput.value.length;
+            const chars = document.querySelector('.prompt-chars');
+            if (promptInput.value.length > 1800) {
+                chars.classList.add('warning');
+            } else {
+                chars.classList.remove('warning');
             }
         });
 
-        // Generate Design Function
+        // Example Prompts
+        const examples = [
+            "Create a modern SaaS landing page with a hero section, gradient background, and animated call-to-action buttons. Use a dark theme with purple and cyan accents.",
+            "Design a luxury coffee shop website with an elegant layout, high-quality image gallery, and online ordering system. Warm brown and cream color palette.",
+            "Build an online clothing store with product grid, filters, shopping cart, and checkout flow. Modern minimalist design with soft colors.",
+            "Create a professional portfolio website to showcase creative work. Include hero section, project gallery, about section, and contact form."
+        ];
+
+        function insertExample(index) {
+            promptInput.value = examples[index];
+            charCount.textContent = promptInput.value.length;
+            promptInput.focus();
+        }
+
+        // Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        function toggleMenu() {
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            navLinks.classList.remove('active');
+        }
+
+        // Scroll Functions
+        function scrollToMain() {
+            document.querySelector('.main-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Generate Design (Keep existing functionality)
         async function generateDesign() {
             const prompt = promptInput.value.trim();
-
+            
             if (!prompt) {
-                alert('Please describe your design vision first!');
+                alert('Please enter a design description');
                 return;
             }
 
             const outputContent = document.getElementById('outputContent');
-
+            
             // Show loading state
             outputContent.innerHTML = `
                 <div class="output-loading">
                     <div class="spinner"></div>
-                    <div class="loading-text">
-                        Generating your design
-                        <div class="loading-dots">
-                            <span class="loading-dot"></span>
-                            <span class="loading-dot"></span>
-                            <span class="loading-dot"></span>
-                        </div>
-                    </div>
+                    <div class="loading-text">Generating your design...</div>
+                    <div class="loading-subtext">This may take a few moments ✨</div>
                 </div>
             `;
 
             try {
-                // Simulate AI processing time
-                // In production, this would call your AI API
-                await simulateAIGeneration(prompt);
+                // Replace with your actual API call
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
 
-                // Generate the design
-                const generatedDesign = generateDesignHTML(prompt);
-
-                // Display the generated design
+                if (!response.ok) throw new Error('Generation failed');
+                
+                const data = await response.json();
+                
+                // Display result
                 outputContent.innerHTML = `
                     <div class="output-preview">
-                        <div class="output-label">Generated Design HTML</div>
-                        <div class="output-content" id="codeOutput">${escapeHtml(generatedDesign)}</div>
+                        <div class="output-tabs">
+                            <button class="output-tab active" onclick="switchTab(0)">Preview</button>
+                            <button class="output-tab" onclick="switchTab(1)">Code</button>
+                        </div>
+                        <div class="output-content" id="previewContent">${data.html || 'Design generated'}</div>
                         <div class="output-actions">
-                            <button class="btn btn-primary btn-small" onclick="copyToClipboard()">
-                                📋 Copy Code
-                            </button>
-                            <button class="btn btn-secondary btn-small" onclick="downloadDesign()">
-                                ⬇️ Download
-                            </button>
+                            <button class="btn btn-small btn-primary" onclick="copyCode()">📋 Copy Code</button>
+                            <button class="btn btn-small btn-secondary" onclick="downloadDesign()">⬇️ Download</button>
+                            <button class="btn btn-small btn-secondary" onclick="regenerate()">🔄 Regenerate</button>
                         </div>
                     </div>
                 `;
@@ -1147,506 +1419,29 @@
                 outputContent.innerHTML = `
                     <div class="output-empty">
                         <div class="output-empty-icon">⚠️</div>
-                        <div class="output-empty-text">Generation Failed</div>
+                        <div class="output-empty-text">Generation Error</div>
                         <p>${error.message}</p>
                     </div>
                 `;
             }
         }
 
-        // Simulate AI generation with delay
-        function simulateAIGeneration(prompt) {
-            return new Promise((resolve) => {
-                // Simulate AI processing (2-4 seconds)
-                const delay = Math.random() * 2000 + 2000;
-                setTimeout(resolve, delay);
-            });
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.output-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tabs[index].classList.add('active');
         }
 
-        // Generate design based on prompt (core AI logic - preserved)
-        function generateDesignHTML(prompt) {
-            // This is a simplified version that generates HTML based on keywords
-            // In production, this would be replaced with actual AI API calls
-            
-            const lowerPrompt = prompt.toLowerCase();
-            
-            // Detect design type
-            const isLanding = lowerPrompt.includes('landing') || lowerPrompt.includes('hero');
-            const isPortfolio = lowerPrompt.includes('portfolio') || lowerPrompt.includes('about');
-            const isDashboard = lowerPrompt.includes('dashboard') || lowerPrompt.includes('analytics');
-            const isEcommerce = lowerPrompt.includes('shop') || lowerPrompt.includes('ecommerce') || lowerPrompt.includes('product');
-            
-            // Detect color preferences
-            let bgColor = '#0f172a';
-            let accentColor = '#6366f1';
-            
-            if (lowerPrompt.includes('dark')) bgColor = '#0f172a';
-            if (lowerPrompt.includes('light')) bgColor = '#f8fafc';
-            if (lowerPrompt.includes('blue')) accentColor = '#3b82f6';
-            if (lowerPrompt.includes('purple')) accentColor = '#8b5cf6';
-            if (lowerPrompt.includes('green')) accentColor = '#10b981';
-            if (lowerPrompt.includes('pink')) accentColor = '#ec4899';
-            
-            // Generate appropriate design
-            if (isDashboard) {
-                return generateDashboardDesign(bgColor, accentColor);
-            } else if (isPortfolio) {
-                return generatePortfolioDesign(bgColor, accentColor);
-            } else if (isEcommerce) {
-                return generateEcommerceDesign(bgColor, accentColor);
-            } else {
-                return generateLandingPageDesign(bgColor, accentColor);
-            }
+        function copyCode() {
+            const content = document.getElementById('previewContent');
+            navigator.clipboard.writeText(content.textContent);
+            alert('Code copied to clipboard!');
         }
 
-        function generateLandingPageDesign(bgColor, accentColor) {
-            return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Landing Page</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, ${bgColor} 0%, #1a1f3a 100%);
-            color: #f1f5f9;
-            line-height: 1.6;
-        }
-        header {
-            backdrop-filter: blur(10px);
-            background: rgba(15, 23, 42, 0.8);
-            padding: 1.5rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: bold; }
-        .hero {
-            padding: 6rem 0;
-            text-align: center;
-        }
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, ${accentColor}, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .subtitle {
-            font-size: 1.25rem;
-            color: #cbd5e1;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .cta-button {
-            background: linear-gradient(135deg, ${accentColor}, #ec4899);
-            color: white;
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 4rem 0;
-        }
-        .feature-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid rgba(${accentColor}, 0.2);
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            border-color: ${accentColor};
-            transform: translateY(-4px);
-        }
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .hero { padding: 3rem 0; }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">✨ Brand</div>
-            <div>Menu</div>
-        </nav>
-    </header>
-    <section class="hero container">
-        <h1>Your Amazing Product</h1>
-        <p class="subtitle">Create something extraordinary with our platform</p>
-        <button class="cta-button">Get Started Now</button>
-    </section>
-    <section class="features container">
-        <div class="feature-card">
-            <h3>⚡ Fast</h3>
-            <p>Lightning quick performance</p>
-        </div>
-        <div class="feature-card">
-            <h3>🎨 Beautiful</h3>
-            <p>Stunning modern design</p>
-        </div>
-        <div class="feature-card">
-            <h3>🚀 Powerful</h3>
-            <p>Packed with features</p>
-        </div>
-    </section>
-</body>
-</html>`;
-        }
-
-        function generatePortfolioDesign(bgColor, accentColor) {
-            return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Portfolio</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: ${bgColor};
-            color: #f1f5f9;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        header {
-            padding: 3rem 0;
-            text-align: center;
-            border-bottom: 2px solid ${accentColor};
-        }
-        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .subtitle { color: #cbd5e1; font-size: 1.1rem; }
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        .portfolio-item {
-            background: linear-gradient(135deg, rgba(${accentColor}, 0.1), rgba(236, 72, 153, 0.1));
-            border-radius: 12px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(${accentColor}, 0.3);
-        }
-        .portfolio-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        .portfolio-item h3 { margin-bottom: 0.5rem; }
-        .portfolio-item p { color: #cbd5e1; }
-        @media (max-width: 768px) {
-            h1 { font-size: 1.75rem; }
-            .portfolio-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>My Portfolio</h1>
-            <p class="subtitle">Showcasing my best work</p>
-        </header>
-        <div class="portfolio-grid">
-            <div class="portfolio-item">
-                <h3>Project One</h3>
-                <p>An amazing project I'm proud of</p>
-            </div>
-            <div class="portfolio-item">
-                <h3>Project Two</h3>
-                <p>Another great achievement</p>
-            </div>
-            <div class="portfolio-item">
-                <h3>Project Three</h3>
-                <p>Innovation and creativity combined</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`;
-        }
-
-        function generateDashboardDesign(bgColor, accentColor) {
-            return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: ${bgColor};
-            color: #f1f5f9;
-        }
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            height: 100vh;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
-            padding: 2rem 1rem;
-            border-right: 1px solid rgba(${accentColor}, 0.2);
-        }
-        .logo { font-size: 1.5rem; font-weight: bold; margin-bottom: 2rem; }
-        .sidebar-menu { list-style: none; }
-        .sidebar-menu li {
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .sidebar-menu li:hover {
-            background: rgba(${accentColor}, 0.2);
-            color: ${accentColor};
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-        }
-        .header { margin-bottom: 2rem; }
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(${accentColor}, 0.2);
-        }
-        .stat-label { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .stat-value { font-size: 2rem; font-weight: bold; }
-        @media (max-width: 768px) {
-            .sidebar { width: 100px; }
-            .main-content { margin-left: 100px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="sidebar">
-        <div class="logo">📊</div>
-        <ul class="sidebar-menu">
-            <li>📈 Dashboard</li>
-            <li>📊 Analytics</li>
-            <li>👥 Users</li>
-            <li>⚙️ Settings</li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <div class="header">
-            <h1>Dashboard</h1>
-            <p style="color: #cbd5e1;">Welcome back, user</p>
-        </div>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Total Users</div>
-                <div class="stat-value">12,456</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Revenue</div>
-                <div class="stat-value">$45.2K</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Growth</div>
-                <div class="stat-value">+23%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Active</div>
-                <div class="stat-value">8,234</div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`;
-        }
-
-        function generateEcommerceDesign(bgColor, accentColor) {
-            return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Store</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: ${bgColor};
-            color: #f1f5f9;
-        }
-        header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(${accentColor}, 0.2);
-        }
-        .logo { font-size: 1.5rem; font-weight: bold; }
-        .search-bar {
-            flex: 1;
-            margin: 0 2rem;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid ${accentColor};
-            border-radius: 8px;
-            color: #f1f5f9;
-        }
-        .cart-icon { font-size: 1.5rem; cursor: pointer; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .hero-banner {
-            background: linear-gradient(135deg, ${accentColor}, #ec4899);
-            padding: 3rem 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        .hero-banner h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s;
-            border: 1px solid rgba(${accentColor}, 0.2);
-        }
-        .product-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(${accentColor}, 0.2), rgba(236, 72, 153, 0.2));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-info { padding: 1.5rem; }
-        .product-name { font-weight: bold; margin-bottom: 0.5rem; }
-        .product-price {
-            color: ${accentColor};
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        .add-to-cart {
-            width: 100%;
-            background: ${accentColor};
-            color: white;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .add-to-cart:hover { opacity: 0.9; }
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 1rem; }
-            .search-bar { margin: 1rem 0; width: 100%; }
-            .products-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo">🛍️ Store</div>
-        <input type="text" class="search-bar" placeholder="Search products...">
-        <div class="cart-icon">🛒 Cart (0)</div>
-    </header>
-    <div class="container">
-        <div class="hero-banner">
-            <h1>Summer Collection 2024</h1>
-            <p>Discover amazing products at incredible prices</p>
-        </div>
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-image">Product 1</div>
-                <div class="product-info">
-                    <div class="product-name">Premium Item</div>
-                    <div class="product-price">$99.99</div>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">Product 2</div>
-                <div class="product-info">
-                    <div class="product-name">Exclusive Deal</div>
-                    <div class="product-price">$79.99</div>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">Product 3</div>
-                <div class="product-info">
-                    <div class="product-name">Best Seller</div>
-                    <div class="product-price">$59.99</div>
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`;
-        }
-
-        // Escape HTML characters
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Copy to clipboard
-        function copyToClipboard() {
-            const codeOutput = document.getElementById('codeOutput');
-            const text = codeOutput.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Code copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy code');
-            });
-        }
-
-        // Download design
         function downloadDesign() {
-            const codeOutput = document.getElementById('codeOutput');
-            const text = codeOutput.textContent;
+            const content = document.getElementById('previewContent');
             const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(content.textContent));
             element.setAttribute('download', 'design.html');
             element.style.display = 'none';
             document.body.appendChild(element);
@@ -1654,33 +1449,27 @@
             document.body.removeChild(element);
         }
 
-        // Clear prompt
+        function regenerate() {
+            generateDesign();
+        }
+
         function clearPrompt() {
             promptInput.value = '';
             charCount.textContent = '0';
+            document.getElementById('outputContent').innerHTML = `
+                <div class="output-empty">
+                    <div class="output-empty-icon">🎯</div>
+                    <div class="output-empty-text">Your Design Awaits</div>
+                    <p>Write a description of your desired design on the left and click "Generate Design" to begin</p>
+                </div>
+            `;
         }
 
-        // Toggle theme
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const themeBtn = document.querySelector('.theme-toggle');
-            themeBtn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-        }
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Focus on prompt area on page load
-        window.addEventListener('load', () => {
-            promptInput.focus();
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.hamburger') && !e.target.closest('.nav-links')) {
+                closeMenu();
+            }
         });
     </script>
 </body>
